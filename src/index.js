@@ -39,17 +39,22 @@ const MORSE_TABLE = {
 
 function decode(expr) {
     // write your solution here
-   return expr
-    .match(/.{10}/g)
-    .map(
-      (item) =>
-        MORSE_TABLE[
-          item.replace(/10/g, ".").replace(/11/g, "-").replace(/0/g, "")
-        ]
-    )
-    .join("");
+  let output = "";
+  for (let i = 0; i < expr.length; i += 10) {
+    const part = expr.slice(i, i + 10).replace(/^0+/, "");
+    if (part[0] === "*") {
+      output += " ";
+    } else {
+      let key = "";
+      for (let i = 0; i < part.length; i += 2) {
+        key += part.slice(i, i + 2) === "10" ? "." : "-";
+      }
+      output += MORSE_TABLE[key];
+    }
+  }
+  return output;
 }
 
 module.exports = {
     decode,
-}
+};
